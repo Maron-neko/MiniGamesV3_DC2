@@ -99,19 +99,17 @@ namespace GAME02 {
 		}
 	}
 	void BOSS::draw() {
+		
 		rectMode(CENTER);
 		image(Img, Px, Py, 0, 3);
-		rectMode(CORNER);
+		noStroke();
 		if (Hp > 0) {
 			fill(0, 255, 0);
-			rect(642, 0, Hp / 4, 10);
+			rectMode(CORNER);
+			int wid = Hp / 4;
+			rect(642, 0, wid, 10);
 		}
 	}
-
-	bool BOSS::drop() {
-		return rand() % 100 < 100;
-	}
-
 	float BOSS::left() { return Px - 72.0f; }
 	float BOSS::right() { return Px + 72.0f; }
 	float BOSS::top() { return Py - 72.0f; }
@@ -121,7 +119,7 @@ namespace GAME02 {
 			right() > bullet.left() &&
 			top() < bullet.bottom() &&
 			bottom() > bullet.top()) {
-			Hp -= 2;
+			Hp -= 1000;
 			return true;
 			
 		}

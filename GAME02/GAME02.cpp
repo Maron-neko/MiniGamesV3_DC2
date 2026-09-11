@@ -40,15 +40,16 @@ namespace GAME02
 		if (Promane.State == Promane.TITLE) {
 			Title();
 		}
+		else if (Promane.State == Promane.OPTION) {
+			Option();
+		}
 		else if (Promane.State == Promane.PLAY) {
 			Play();
 		}
 		else if (Promane.State == Promane.HARD) {
 			Play();
 		}
-		else if (Promane.State == Promane.OPTION) {
-			Option();
-		}
+		
 		else if (Promane.State == Promane.GAMEOVER) {
 			GameOver();
 		}

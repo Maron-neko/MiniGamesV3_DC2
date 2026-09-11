@@ -10,137 +10,140 @@ namespace GAME02 {
 		Py = height -220;
 		Bom = 1;
 		Shotlevel = 1;
-		i = 1;
+		ControlOut = false;
 	}
 
 	void PLAYER::update() {	
-		if (ControlMode[0] == 1) {
-			Vx = 4.0f;
-			Vy = 4.0f;
-			if (isPress(KEY_SHIFT)) {
-				Vx = 1.5f;
-				Vy = 1.5f;
-			}
-			if (isPress(MOUSE_RBUTTON)) {
-				Vx = 1.5f;
-				Vy = 1.5f;
-			}
-		}
-		if (ControlMode[0] == 2) {
-			if (Now == 1) {
+		if (!ControlOut) {
+			if (ControlMode[0] == 1) {
 				Vx = 4.0f;
 				Vy = 4.0f;
+				if (isPress(KEY_SHIFT)) {
+					Vx = 1.5f;
+					Vy = 1.5f;
+				}
+				if (isPress(MOUSE_RBUTTON)) {
+					Vx = 1.5f;
+					Vy = 1.5f;
+				}
 			}
-			if (isTrigger(KEY_SHIFT)) {
-				Vx = 1.5f;
-				Vy = 1.5f;
-				Now *= -1;
+			if (ControlMode[0] == 2) {
+				if (Now == 1) {
+					Vx = 4.0f;
+					Vy = 4.0f;
+				}
+				if (isTrigger(KEY_SHIFT)) {
+					Vx = 1.5f;
+					Vy = 1.5f;
+					Now *= -1;
+				}
+				if (isTrigger(MOUSE_RBUTTON)) {
+					Vx = 1.5f;
+					Vy = 1.5f;
+					Now *= -1;
+				}
 			}
-			if (isTrigger(MOUSE_RBUTTON)) {
-				Vx = 1.5f;
-				Vy = 1.5f;
-				Now *= -1;
-			}
-		}
-		
-		if (ControlMode[1] == 1) {
-			if (isPress(KEY_A)) {
-				Px -= Vx;
-			}
-			if (isPress(KEY_D)) {
-				Px += Vx;
-			}
-			if (isPress(KEY_W)) {
-				Py -= Vy;
-			}
-			if (isPress(KEY_S)) {
-				Py += Vy;
-			}
-			if (isPress(KEY_LEFT)) {
-				Px -= Vx;
-			}
-			if (isPress(KEY_RIGHT)) {
-				Px += Vx;
-			}
-			if (isPress(KEY_UP)) {
-				Py -= Vy;
-			}
-			if (isPress(KEY_DOWN)) {
-				Py += Vy;
-			}
-		}
-		if (ControlMode[1] == 2) {
-			Px = MouseX;
-			Py = MouseY;
-		}
-		if (Px < 640+24) {
-			SetCursorPos(641 + 24, MouseY);
-			Px = 641+24;
-		}
-		if (Px > 1920-24){
-			Px = 1895;
-		}
-		if (Py < 0) {
-			Py = 1;
-		}
-		if (Py > 1080) {
-			Py = 1079;
-		}
 
+			if (ControlMode[1] == 1) {
+				if (isPress(KEY_A)) {
+					Px -= Vx;
+				}
+				if (isPress(KEY_D)) {
+					Px += Vx;
+				}
+				if (isPress(KEY_W)) {
+					Py -= Vy;
+				}
+				if (isPress(KEY_S)) {
+					Py += Vy;
+				}
+				if (isPress(KEY_LEFT)) {
+					Px -= Vx;
+				}
+				if (isPress(KEY_RIGHT)) {
+					Px += Vx;
+				}
+				if (isPress(KEY_UP)) {
+					Py -= Vy;
+				}
+				if (isPress(KEY_DOWN)) {
+					Py += Vy;
+				}
+			}
+			if (ControlMode[1] == 2) {
+				Px = MouseX;
+				Py = MouseY;
+			}
+			if (Px < 640 + 24) {
+				SetCursorPos(641 + 24, MouseY);
+				Px = 641 + 24;
+			}
+			if (Px > 1920 - 24) {
+				Px = 1895;
+			}
+			if (Py < 0) {
+				Py = 1;
+			}
+			if (Py > 1080) {
+				Py = 1079;
+			}
+		}
 	}
 	void PLAYER::hardupdate() {
-		Vx = 5.0f;
-		Vy = 5.0f;
-		if (isPress(KEY_SHIFT)) {
-			Vx = 2.5f;
-			Vy = 2.5f;
-		}
-		if (isTrigger(KEY_SHIFT)) {
-			Vx = 2.5f;
-			Vy = 2.5f;
-		}
-		if (ControlMode[1] == 1) {
-			if (isPress(KEY_A)) {
-				Px -= Vx;
+		if (!ControlOut) {
+			Vx = 5.0f;
+			Vy = 5.0f;
+			if (isPress(KEY_SHIFT)) {
+				Vx = 2.5f;
+				Vy = 2.5f;
 			}
-			if (isPress(KEY_D)) {
-				Px += Vx;
+			if (isTrigger(KEY_SHIFT)) {
+				Vx = 2.5f;
+				Vy = 2.5f;
 			}
-			if (isPress(KEY_W)) {
-				Py -= Vy;
+			if (ControlMode[1] == 1) {
+				if (isPress(KEY_A)) {
+					Px -= Vx;
+				}
+				if (isPress(KEY_D)) {
+					Px += Vx;
+				}
+				if (isPress(KEY_W)) {
+					Py -= Vy;
+				}
+				if (isPress(KEY_S)) {
+					Py += Vy;
+				}
+				if (isPress(KEY_LEFT)) {
+					Px -= Vx;
+				}
+				if (isPress(KEY_RIGHT)) {
+					Px += Vx;
+				}
+				if (isPress(KEY_UP)) {
+					Py -= Vy;
+				}
+				if (isPress(KEY_DOWN)) {
+					Py += Vy;
+				}
 			}
-			if (isPress(KEY_S)) {
-				Py += Vy;
+			if (ControlMode[1] == 2) {
+				Px = MouseX;
+				Py = MouseY;
 			}
-			if (isPress(KEY_LEFT)) {
-				Px -= Vx;
+			if (Px < 640 + 24) {
+				SetCursorPos(641 + 24, MouseY);
+				Px = 641 + 24;
 			}
-			if (isPress(KEY_RIGHT)) {
-				Px += Vx;
+			if (Px > 1920 - 24) {
+				Px = 1895;
 			}
-			if (isPress(KEY_UP)) {
-				Py -= Vy;
+			if (Py < 0) {
+				Py = 1;
 			}
-			if (isPress(KEY_DOWN)) {
-				Py += Vy;
+			if (Py > 1080) {
+				Py = 1079;
 			}
-		}
-		if (ControlMode[1] == 2) {
-			Px = MouseX;
-			Py = MouseY;
-		}
-		if (Px < 640 + 24) {
-			SetCursorPos(641+24,MouseY);
-			Px = 641 + 24;
-		}
-		if (Px > 1920 - 24) {
-			Px = 1895;
-		}
-		if (Py < 0) {
-			Py = 1;
-		}
-		if (Py > 1080) {
-			Py = 1079;
 		}
 
 	}

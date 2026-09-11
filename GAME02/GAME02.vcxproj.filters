@@ -19,6 +19,9 @@
     <ClCompile Include="ENEMY3.cpp" />
     <ClCompile Include="ZIKINERAI.cpp" />
     <ClCompile Include="PROMANE.cpp" />
+    <ClCompile Include="TALKPART.cpp" />
+    <ClCompile Include="FADE.cpp" />
+    <ClCompile Include="ENEMY4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GAME02.h" />
@@ -40,6 +43,9 @@
     <ClInclude Include="ENEMY3.h" />
     <ClInclude Include="ZIKINERAI.h" />
     <ClInclude Include="PROMANE.h" />
+    <ClInclude Include="TALKPART.h" />
+    <ClInclude Include="FADE.h" />
+    <ClInclude Include="ENEMY4.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\MAIN\assets\game02\title.txt" />

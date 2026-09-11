@@ -141,7 +141,9 @@
     <ClCompile Include="ENEMY.cpp" />
     <ClCompile Include="ENEMY2.cpp" />
     <ClCompile Include="ENEMY3.cpp" />
+    <ClCompile Include="ENEMY4.cpp" />
     <ClCompile Include="ENEMY_BASE.cpp" />
+    <ClCompile Include="FADE.cpp" />
     <ClCompile Include="GAME02.cpp" />
     <ClCompile Include="HAIKEI.cpp" />
     <ClCompile Include="ITEM.cpp" />
@@ -150,6 +152,7 @@
     <ClCompile Include="SAVELOAD.cpp" />
     <ClCompile Include="SHOT_POINT.cpp" />
     <ClCompile Include="SOUNDS.cpp" />
+    <ClCompile Include="TALKPART.cpp" />
     <ClCompile Include="ZIKINERAI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -162,7 +165,9 @@
     <ClInclude Include="ENEMY.h" />
     <ClInclude Include="ENEMY2.h" />
     <ClInclude Include="ENEMY3.h" />
+    <ClInclude Include="ENEMY4.h" />
     <ClInclude Include="ENEMY_BASE.h" />
+    <ClInclude Include="FADE.h" />
     <ClInclude Include="GAME02.h" />
     <ClInclude Include="HAIKEI.h" />
     <ClInclude Include="ITEM.h" />
@@ -171,6 +176,7 @@
     <ClInclude Include="SAVELOAD.h" />
     <ClInclude Include="SHOT_POINT.h" />
     <ClInclude Include="SOUNDS.h" />
+    <ClInclude Include="TALKPART.h" />
     <ClInclude Include="ZIKINERAI.h" />
   </ItemGroup>
   <ItemGroup>

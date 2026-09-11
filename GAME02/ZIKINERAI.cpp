@@ -14,7 +14,7 @@ namespace GAME02 {
 		By = enemy.Py;
 		float vx = player.Px - enemy.Px;
 		float vy = player.Py - enemy.Py;
-		int length = Sqrt(vx * vx + vy * vy);
+		float length = Sqrt(vx * vx + vy * vy);
 		Vx = vx / length * 5;
 		Vy = vy / length * 5;
 		Alive = true;

@@ -12,7 +12,7 @@ namespace GAME02
 		int Bom;
 		int Shotlevel;
 		int ControlMode[2]{1,1};
-		int i=1;
+		bool ControlOut = false;
 		void create();
 		void init();
 		void update();

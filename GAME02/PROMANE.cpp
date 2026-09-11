@@ -7,12 +7,13 @@ namespace GAME02 {
 	void PROMANE::Init() {
 		Time = 0;
 		//Timer = 120;
+		IsChangingState = false;
 		ShotDelay = 0;
-		Wave = 5;
+		Wave = 1;
+		Stage = 1;
 		Score = 0;
 		Delay = 9;
 		Hdelay = 12;
-		BossState = NOPOP;
 		BossState = NOPOP;
 	}
 
@@ -45,6 +46,7 @@ namespace GAME02 {
 			text("GameMode:HARD", 0, 250);
 		}
 		text((let)"Wave" + Wave, 0, 300);
+
 	}
 	void PROMANE::GameOverTexts() {
 		fill(255, 0, 0);
@@ -56,6 +58,7 @@ namespace GAME02 {
 		if (BossState == BOSSPOP) {
 			text((let)"BossHp " + Boss.Hp, 0, 250);
 		}
+		text((let)"NextState " + NextState, 0, 300);
 		text("Rキーでリトライ", 0, 1080);
 	}
 	void PROMANE::GameClearTexts() {
@@ -77,6 +80,7 @@ namespace GAME02 {
 		Boss.create();
 		Background.create();
 		Sound.create();
+		Talk.create();
 		for (int i = 0; i < ITEM_NUM; i++) {
 			Item[i].create();
 		}
@@ -121,6 +125,7 @@ namespace GAME02 {
 	void PROMANE::AllInit() {
 		Player.init();
 		Boss.init();
+		Talk.init();
 		for (int i = 0; i < BULLET_NUM; i++) {
 			Bullet[i].init();
 		}
@@ -213,6 +218,7 @@ namespace GAME02 {
 	}
 	void PROMANE::AllDraw() {
 		Player.draw();
+		Talk.draw();
 		for (int i = 0; i < BULLET_NUM; i++) {
 			Bullet[i].draw();
 		}
@@ -244,9 +250,7 @@ namespace GAME02 {
 			}
 			Enemy3[i].draw();
 		}
-		if (BossState == BOSSPOP) {
-			Boss.draw();
-		}
+		Fade.draw();
 	}
 	void PROMANE::AllUpdate(){
 		if (State == PLAY) {
@@ -283,6 +287,8 @@ namespace GAME02 {
 			}
 			Enemy3[i].update();
 		}
+		Fade.update();
+		Talk.update();
 		Time+=DeltaTime;
 		//Timer -= DeltaTime;
 	}
@@ -444,7 +450,6 @@ namespace GAME02 {
 				if (Item[i].hit(Player)) {
 					Sound.getitemsound();
 					Item[i].Alive = false;
-					Player.i++;
 					if (State == PLAY) {
 						if (Player.Shotlevel < 4) {
 							Player.Shotlevel++;
@@ -694,45 +699,61 @@ namespace GAME02 {
 		clear(255, 0, 255);
 		Background.titledraw();
 		TitleMainText();
+		Fade.draw();
 		//PLAY
-		if (MouseX > width / 2 - 50 && MouseX < width / 2 + 50 && MouseY > 400 && MouseY < 450) {
-			fill(255, 255, 255);
-			text("PLAY", width / 2 - 50, 450);
-		}
-		if (MouseX > width / 2 - 50 && MouseX < width / 2 + 50 && MouseY > 400 && MouseY < 450 && isTrigger(MOUSE_LBUTTON)) {
-			Sound.clicksound();
-			AllInit();
-			State = PLAY;
-			Sound.playsound();
-		}
+		if (!IsChangingState) {
+			if (MouseX > width / 2 - 50 && MouseX < width / 2 + 50 && MouseY > 400 && MouseY < 450) {
+				fill(255, 255, 255);
+				text("PLAY", width / 2 - 50, 450);
+			}
+			if (MouseX > width / 2 - 50 && MouseX < width / 2 + 50 && MouseY > 400 && MouseY < 450 && isTrigger(MOUSE_LBUTTON)) {
+				Sound.clicksound();
+				Fade.startFade();
+				IsChangingState = true;
+				NextState = PLAY;
+			}
 
-		//HARD
-		if (MouseX > width / 2 - 50 && MouseX < width / 2 + 65 && MouseY > 500 && MouseY < 550) {
-			fill(255, 255, 255);
-			text("HARD", width / 2 - 50, 550);
+			//HARD
+			if (MouseX > width / 2 - 50 && MouseX < width / 2 + 65 && MouseY > 500 && MouseY < 550) {
+				fill(255, 255, 255);
+				text("HARD", width / 2 - 50, 550);
+			}
+			if (MouseX > width / 2 - 50 && MouseX < width / 2 + 65 && MouseY > 500 && MouseY < 550 && isTrigger(MOUSE_LBUTTON))
+			{
+				Sound.clicksound();
+				Fade.startFade();
+				IsChangingState = true;
+				NextState = HARD;
+				
+			}
+
+			//OPTION
+			if (MouseX > width / 2 - 50 && MouseX < width / 2 + 100 && MouseY > 600 && MouseY < 650) {
+				fill(255, 255, 255);
+				text("OPTION", width / 2 - 50, 650);
+			}
+			if (MouseX > width / 2 - 50 && MouseX < width / 2 + 100 && MouseY > 600 && MouseY < 650 && isTrigger(MOUSE_LBUTTON)) {
+				Sound.clicksound();
+				Fade.startFade();
+				IsChangingState = true;
+				NextState = OPTION;
+			}
 		}
-		if (MouseX > width / 2 - 50 && MouseX < width / 2 + 65 && MouseY > 500 && MouseY < 550 && isTrigger(MOUSE_LBUTTON))
+		Fade.fadeoutonly();
+		if (IsChangingState && Fade.fadeend())
 		{
-			Sound.clicksound();
-			AllInit();
-			State = HARD;
-			Sound.playsound();
-		}
+			if (NextState != OPTION) {
+				AllInit();
+				Sound.playsound();
+			}
+			Fade.show();
+			IsChangingState = false;
+			State = NextState;
 
-		//OPTION
-		if (MouseX > width / 2 - 50 && MouseX < width / 2 + 100 && MouseY > 600 && MouseY < 650) {
-			fill(255, 255, 255);
-			text("OPTION", width / 2 - 50, 650);
-		}
-		if (MouseX > width / 2 - 50 && MouseX < width / 2 + 100 && MouseY > 600 && MouseY < 650 && isTrigger(MOUSE_LBUTTON)) {
-			Sound.clicksound();
-			State = OPTION;
 		}
 	}
 	void PROMANE::OptionProcess() {
-		clear();
 		Background.titledraw();
-		fill(0, 0, 0);
 		text("Tでタイトルに戻る", 0, 100);
 		text("操作をマウスにすると難易度が上がります(簡単すぎたので)", 0, 50);
 		if (Choose[0] == 0) {
@@ -916,16 +937,14 @@ namespace GAME02 {
 		}
 	}
 	void PROMANE::PlayProcess() {
-		clear(20, 255, 255);
 		hideCursor();
-		fill(255, 255, 255);
 		HighScore = Save.loadscore();
 		//////////////////////////////////////////////////////////////////////////////////////////////
 		//更新と表示
 		Background.draw();
 		AllDraw();
 		AllUpdate();
-
+		
 		//////////////////////////////////////////////////////////////////////////////////////////////
 		//弾処理
 		AmmoProcess();
@@ -939,12 +958,12 @@ namespace GAME02 {
 		Waves();
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
-		//ボス
-		BossProcess();
+		
 
 		Background.secdraw();
 		PlayTexts();
-
+		//ボス
+		BossProcess();
 	}
 	void PROMANE::AmmoProcess() {
 		ShotCount = 0;
@@ -1081,7 +1100,7 @@ namespace GAME02 {
 				BossState = BOSSPOP;
 			}
 		}
-		if (Wave == 0) {
+		if (BossState==BOSSPOP) {
 			//敵の弾消してからボス召喚
 			for (int i = 0; i < BULLET_ENUM; i++) {
 				Ebullet[i].Alive = false;
@@ -1089,27 +1108,62 @@ namespace GAME02 {
 			for (int i = 0; i < ZIKINERAI_NUM; i++) {
 				Zikinerai[i].Alive = false;
 			}
-			Boss.update();
 			Boss.draw();
+			Boss.update();
 			if (Boss.Cnt4 < 0) {
 				Bossshot();
 			}
 
 		}
 		if (Boss.Hp <= 0) {
-
-			if (Boss.Hp <= 0) {
+			BossState = BOSSEND;
+			if (Boss.Alive == true) {
 				if (State == PLAY) {
 					Score += 100000;
 				}
-				if (State == PLAY) {
+				if (State == HARD) {
 					Score += 200000;
 				}
-				Save.savescore(Score);
-				State = CLEAR;
+				Boss.Alive = false;
 			}
-			Save.savescore(Score);
-			State = CLEAR;
+			for (int i = 0; i < BULLET_BNUM; i++) {
+				Bbullet[i].Alive = false;
+			}
+			for (int i = 0; i < BULLET_BNUM; i++) {
+				Bbullet2[i].Alive = false;
+			}
+			if (Talk.Kaisuu == 1) {
+				if (Talk.Mendoune == 0) {
+					Save.savescore(Score);
+					if (!Talk.talkend()) {
+						if (BossState = BOSSEND) {
+							Sound.bossStopSound();
+							Player.ControlOut = true;
+							Player.Px = width - width / 3;
+							Player.Py = height - 400;
+							Talk.start();
+						}
+						Talk.draw();
+					}
+					else if (Talk.talkend()) {
+						if (!IsChangingState) {
+							Fade.FadeSpeed = 2;
+							Fade.startFade();
+							IsChangingState = true;
+						}
+						Player.Py += Vy -= 0.1f;
+						if (Player.Py <= -100 && IsChangingState) {
+							IsChangingState = false;
+							Fade.FadeSpeed = 0.5;
+							Talk.talkout();
+							AllInit();
+							Sound.playsound();
+							Stage = 1;
+							State == PLAY;
+						}
+					}
+				}
+			}
 		}
 		if (isTrigger(KEY_T)) {
 			Save.savescore(Score);
@@ -1128,25 +1182,39 @@ namespace GAME02 {
 		AllDraw();
 
 		//すべて初期化してリトライ
-		if (isTrigger(KEY_R)) {
+		if (!IsChangingState) {
+			if (isTrigger(KEY_R))
+			{
+				if (State == GAMEOVER)
+				{
+					NextState = PLAY;
+				}
+				else if (State == HARDOVER)
+				{
+					NextState = HARD;
+				}
+
+				Fade.startFade();
+
+				IsChangingState = true;
+			}
+			if (isTrigger(KEY_T)) {
+				State = TITLE;
+			}
+		}
+		Fade.fadeoutonly();
+		if (IsChangingState && Fade.fadeend())
+		{
 			AllInit();
 			Background.Take = 0;
-			if (State == GAMEOVER) {
-				State = PLAY;
-				Sound.playsound();
-			}
-			if (State == HARDOVER) {
-				State = HARD;
-				Sound.playsound();
-			}
+			State = NextState;
+			Sound.playsound();
+			Fade.show();
+			IsChangingState = false;
 		}
-		if (isTrigger(KEY_T)) {
-			State = TITLE;
-		}
-
+		
 	}
 	void PROMANE::GameClearProcess(){
-		clear(0, 255, 0);
 		HighScore = Save.loadscore();
 		Background.cleardraw();
 		Sound.playstopsound();

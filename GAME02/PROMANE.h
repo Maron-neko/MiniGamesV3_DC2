@@ -1,29 +1,33 @@
 #pragma once
-#include"PLAYER.h"
-#include"ENEMY.h"
-#include"haikei.h"
-#include"BULLET.h"
-#include"DEFINES.h"
-#include"ITEM.h"
+#include "PLAYER.h"
+#include "ENEMY.h"
+#include "haikei.h"
+#include "BULLET.h"
+#include "DEFINES.h"
+#include "ITEM.h"
 #include "EBULLET.h"
 #include "SHOT_POINT.h"
-#include"Saveload.h"
+#include "Saveload.h"
 #include "ENEMY2.h"
 #include "BBULLET.h"
 #include "SOUNDS.h"
 #include "BBULLET2.h"
 #include "ENEMY3.h"
 #include "ZIKINERAI.h"
+#include "FADE.h"
+#include "TALKPART.h"
 #include<windows.h>
 namespace GAME02 {
     //Project Manager
     class PROMANE 
     {
     private:
+        int Vy = -5;//ステージ移動用
 
-        enum { NOPOP, BOSSPOP };
-
+        enum { NOPOP, BOSSPOP, BOSSEND };
+        int NextState;
         int BossState;
+        bool IsChangingState = false;
         float ShotDelay;
         float Time;
         //float Timer;
@@ -34,6 +38,7 @@ namespace GAME02 {
         int Wave;
         int Score;
         int HighScore;
+        int Stage = 0;
         float Deg[2]{};
         int offsetx[SHOT_POINT] =
         {
@@ -62,6 +67,8 @@ namespace GAME02 {
         BBULLET Bbullet[BULLET_BNUM];
         BBULLET2 Bbullet2[BULLET_BNUM];
         SOUNDS Sound;
+        FADE Fade;
+        TALKPART Talk;
     public:
         enum { TITLE, PLAY, OPTION, HARD, HARDOVER, GAMEOVER, CLEAR, };
         int State;

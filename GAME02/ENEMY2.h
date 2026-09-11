@@ -26,7 +26,6 @@ namespace GAME02 {
 		void init();
 		void update();
 		void draw();
-		bool drop();
 		void bosspop();
 		void bossPattern1();
 		void bossPattern2();
